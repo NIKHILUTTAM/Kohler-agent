@@ -10,9 +10,11 @@ An AI-powered enterprise knowledge assistant that combines **Retrieval-Augmented
 
 ## 📌 Project Overview
 
-The **KOHLER Unified Enterprise AI Agent** is a prototype designed for **Track 3: KOHLER Unified Enterprise AI Agent**.
+The **KOHLER Unified Enterprise AI Agent** is a functional prototype developed for:
 
-The objective is to create an enterprise-grade conversational AI system capable of answering questions across multiple organizational knowledge domains while adapting its output according to user requirements.
+> **Track 3 — KOHLER Unified Enterprise AI Agent**
+
+The objective of this project is to create a conversational AI system capable of answering questions across multiple enterprise knowledge domains while adapting its output according to user requirements.
 
 The system provides a unified conversational interface for domains such as:
 
@@ -24,15 +26,15 @@ The system provides a unified conversational interface for domains such as:
 
 Instead of manually searching through different documents, users can interact with a single AI assistant using natural language.
 
-The system retrieves relevant information from the enterprise knowledge base, provides it as context to the LLM, generates a grounded response, and optionally transforms the response into the format requested by the user.
+The system retrieves relevant information from the knowledge base, provides it as context to the LLM, generates a grounded response, and optionally transforms the response into the format requested by the user.
 
 ---
 
 # 🎯 Problem Statement
 
-Enterprise information is often distributed across multiple departments, documents, policies, and knowledge bases.
+Enterprise information is often distributed across multiple departments, policies, documents, and knowledge bases.
 
-Employees may need to:
+Employees and business users may need to:
 
 1. Find the correct document.
 2. Search for relevant information.
@@ -40,7 +42,7 @@ Employees may need to:
 4. Interpret the information.
 5. Convert it into a usable business format.
 
-This process is time-consuming and can lead to inconsistent interpretations.
+This process can be time-consuming and may result in inconsistent interpretations.
 
 ### Proposed Solution
 
@@ -90,13 +92,13 @@ Relevant Context
 LLM
 ```
 
-This improves factual grounding and reduces unsupported responses.
+This approach helps improve factual grounding and reduce unsupported responses.
 
 ---
 
 ## 2. Multi-Domain Enterprise Knowledge
 
-The prototype supports multiple enterprise knowledge domains through separate knowledge documents.
+The prototype supports multiple enterprise knowledge domains through knowledge-base documents.
 
 Example:
 
@@ -108,7 +110,7 @@ knowledge_base/
 └── privacy_policy.md
 ```
 
-The architecture can be extended to additional enterprise domains without changing the core conversational workflow.
+The architecture can be extended to additional enterprise domains without changing the fundamental conversational workflow.
 
 ---
 
@@ -169,7 +171,7 @@ The core workflow is implemented using **LangGraph**.
                           ▼
                  ┌──────────────────┐
                  │    LANGGRAPH     │
-                 │   WORKFLOW       │
+                 │    WORKFLOW      │
                  └────────┬─────────┘
                           │
                  ┌────────┴────────┐
@@ -208,7 +210,7 @@ The core workflow is implemented using **LangGraph**.
 
 The retrieval system uses embedding-based semantic similarity.
 
-### Processing
+### Document Processing
 
 ```text
 Document
@@ -221,10 +223,10 @@ Chunking
    ↓
 Embedding Generation
    ↓
-Index
+Semantic Index
 ```
 
-For a user query:
+### Query Processing
 
 ```text
 User Query
@@ -285,7 +287,7 @@ nomic-embed-text
 
 The models can be changed using environment variables.
 
-```bash
+```text
 KOHLER_CHAT_MODEL
 KOHLER_EMBED_MODEL
 OLLAMA_BASE_URL
@@ -405,7 +407,7 @@ The application is built using **Streamlit**.
 
 ### Main Interface
 
-The user can:
+Users can:
 
 * Ask natural-language questions.
 * Continue multi-turn conversations.
@@ -451,6 +453,8 @@ This demonstrates how the prototype can adapt to changing organizational knowled
 ```text
 kohler-unified-enterprise-ai-agent/
 │
+├── .venv/
+│
 ├── kohler_agent_core.py
 ├── kohler_unified_agent_app.py
 ├── requirements.txt
@@ -473,6 +477,8 @@ kohler-unified-enterprise-ai-agent/
 └── demo/
     └── VIDEO_LINK.md
 ```
+
+> **Note:** `.venv/` is a local development environment and should **not** be committed to GitHub.
 
 ---
 
@@ -512,69 +518,135 @@ Contains the Streamlit application:
 
 ---
 
-# ⚙️ Configuration
+# ⚙️ Installation & Setup
 
-The application supports environment-based configuration.
+## 1. Create a Python Virtual Environment
 
-Example:
+Open **PowerShell** in the project directory:
 
-```bash
-export KOHLER_CHAT_MODEL="qwen2.5:3b"
-export KOHLER_EMBED_MODEL="nomic-embed-text"
-export OLLAMA_BASE_URL="http://127.0.0.1:11434"
-export KOHLER_TOP_K="5"
-export KOHLER_KNOWLEDGE_DIR="./knowledge_base"
-export KOHLER_MEMORY_FILE="./conversation_memory.json"
+```powershell
+python -m venv .venv
+```
+
+Activate the virtual environment:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+After activation, the terminal should show:
+
+```text
+(.venv)
 ```
 
 ---
 
-# 💻 Installation
+## 2. Upgrade pip
 
-## Prerequisites
-
-Install:
-
-* Python 3.10+
-* Ollama
-
-Then install Python dependencies:
-
-```bash
-pip install -r requirements.txt
+```powershell
+python -m pip install --upgrade pip
 ```
 
 ---
 
-# ▶️ Running the Application
+## 3. Install Python Dependencies
 
-Start the application using:
+Install the core dependencies:
 
-```bash
-streamlit run kohler_unified_agent_app.py
+```powershell
+python -m pip install streamlit requests langchain langchain-core langchain-ollama langgraph pypdf python-docx
 ```
 
-The application will load the knowledge base and initialize the retrieval pipeline.
+Install the document export dependencies:
+
+```powershell
+python -m pip install openpyxl reportlab
+```
+
+### Main Dependencies
+
+| Package            | Purpose                   |
+| ------------------ | ------------------------- |
+| `streamlit`        | Web-based user interface  |
+| `requests`         | HTTP/API communication    |
+| `langchain`        | LLM application framework |
+| `langchain-core`   | LangChain core components |
+| `langchain-ollama` | Ollama model integration  |
+| `langgraph`        | AI workflow orchestration |
+| `pypdf`            | PDF document processing   |
+| `python-docx`      | DOCX document processing  |
+| `openpyxl`         | Excel generation          |
+| `reportlab`        | PDF generation            |
 
 ---
 
-# 🧪 Self-Test
+# 🤖 Ollama Installation
 
-The project includes a built-in self-test.
+The project uses **Ollama** to run the LLM locally.
 
-Run:
+### Windows Installer
 
-```bash
-python kohler_unified_agent_app.py --self-test
+Download and install Ollama:
+
+https://ollama.com/download/OllamaSetup.exe
+
+After installation, verify Ollama:
+
+```powershell
+ollama --version
 ```
 
-Expected output:
+Check the Ollama service:
+
+```powershell
+ollama status
+```
+
+---
+
+# 🧠 Required AI Models
+
+The default configuration uses:
+
+```text
+Chat Model:
+qwen2.5:3b
+
+Embedding Model:
+nomic-embed-text
+```
+
+If the models are not already installed, run:
+
+```powershell
+ollama pull qwen2.5:3b
+ollama pull nomic-embed-text
+```
+
+Verify installed models:
+
+```powershell
+ollama list
+```
+
+---
+
+# 🧪 Run the Self-Test
+
+Before launching the application, run the built-in core self-test:
+
+```powershell
+python kohler_agent_core.py --self-test
+```
+
+A successful test should report:
 
 ```text
 CORE SELF-TEST PASSED
 ```
 
-The self-test validates important components including:
+The self-test validates important functionality including:
 
 * Text chunking
 * JSON extraction
@@ -585,7 +657,168 @@ The self-test validates important components including:
 
 ---
 
-# 💡 Example Use Cases
+# ▶️ Run the Application
+
+Launch the Streamlit application:
+
+```powershell
+streamlit run kohler_unified_agent_app.py
+```
+
+If the `streamlit` command is not recognized, use:
+
+```powershell
+python -m streamlit run kohler_unified_agent_app.py
+```
+
+Streamlit will provide a local URL, normally:
+
+```text
+http://localhost:8501
+```
+
+Open the URL in your browser to access the **KOHLER Unified Enterprise AI Agent**.
+
+---
+
+# 🚀 Quick Start
+
+For a fresh Windows setup:
+
+```powershell
+python -m venv .venv
+
+.venv\Scripts\Activate.ps1
+
+python -m pip install --upgrade pip
+
+python -m pip install streamlit requests langchain langchain-core langchain-ollama langgraph pypdf python-docx openpyxl reportlab
+```
+
+Install and verify Ollama:
+
+```powershell
+ollama --version
+ollama status
+ollama list
+```
+
+Install the required models if necessary:
+
+```powershell
+ollama pull qwen2.5:3b
+ollama pull nomic-embed-text
+```
+
+Run the self-test:
+
+```powershell
+python kohler_agent_core.py --self-test
+```
+
+Start the application:
+
+```powershell
+streamlit run kohler_unified_agent_app.py
+```
+
+---
+
+# 🛠️ Troubleshooting
+
+## PowerShell Execution Policy Error
+
+If PowerShell blocks:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+run:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+Then activate the environment again:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+---
+
+## Ollama Is Not Running
+
+Check:
+
+```powershell
+ollama status
+```
+
+If Ollama is not running, start the Ollama application and retry.
+
+Then verify:
+
+```powershell
+ollama list
+```
+
+---
+
+## Model Not Found
+
+If the application reports that a model is unavailable:
+
+```powershell
+ollama pull qwen2.5:3b
+ollama pull nomic-embed-text
+```
+
+Then verify:
+
+```powershell
+ollama list
+```
+
+---
+
+## Streamlit Command Not Found
+
+Activate the virtual environment:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+Then run:
+
+```powershell
+python -m streamlit run kohler_unified_agent_app.py
+```
+
+---
+
+# 🔧 Configuration
+
+The application supports environment-based configuration.
+
+Example:
+
+```powershell
+$env:KOHLER_CHAT_MODEL="qwen2.5:3b"
+$env:KOHLER_EMBED_MODEL="nomic-embed-text"
+$env:OLLAMA_BASE_URL="http://127.0.0.1:11434"
+$env:KOHLER_TOP_K="5"
+$env:KOHLER_KNOWLEDGE_DIR="./knowledge_base"
+$env:KOHLER_MEMORY_FILE="./conversation_memory.json"
+```
+
+This allows the application to be configured without modifying the source code.
+
+---
+
+# 💡 Example Queries
 
 ## HR
 
@@ -611,51 +844,77 @@ When should a customer issue be escalated?
 How should a personal-data deletion request be handled?
 ```
 
-## Conversational Transformation
+---
+
+# 🔄 Multi-Turn Example
 
 ```text
 User:
 What are the reimbursement requirements?
 
+AI:
+[Grounded response]
+
 User:
-Summarize this.
+Summarize this in three bullet points.
+
+AI:
+[Summary]
 
 User:
 Convert this into JSON.
 
+AI:
+[Structured JSON]
+
 User:
 Now draft an email based on it.
+
+AI:
+[Ready-to-send email]
+```
+
+This demonstrates:
+
+```text
+Retrieval
+   ↓
+Reasoning
+   ↓
+Conversation Memory
+   ↓
+Context Resolution
+   ↓
+Output Transformation
 ```
 
 ---
 
 # 🏢 Enterprise Use Cases
 
-The architecture can support:
+## Employee Self-Service
 
-### Employee Self-Service
+Employees can quickly access HR policies and internal procedures through natural language.
 
-Quick access to HR policies and internal procedures.
+## Finance Operations
 
-### Finance Operations
+Employees can retrieve reimbursement and finance guidelines without manually searching multiple documents.
 
-Faster understanding of reimbursement and finance guidelines.
+## Customer Support
 
-### Customer Support
+Support teams can retrieve escalation procedures and generate standardized responses.
 
-Rapid access to escalation procedures and standardized response generation.
+## Privacy Operations
 
-### Privacy Operations
+Employees can retrieve approved privacy procedures and identify appropriate escalation paths.
 
-Retrieval of approved privacy procedures and escalation guidance.
+## Enterprise Knowledge Search
 
-### Enterprise Knowledge Search
-
-Unified conversational access to organizational documentation.
+Organizations can provide conversational access to distributed documentation through one interface.
 
 ---
 
-# 🔐 Security Considerations
+# 🔐 Security & Trust Considerations
 
 The prototype follows a local-first approach.
 
@@ -665,7 +924,7 @@ The default setup uses Ollama for local LLM inference.
 
 ### Knowledge Grounding
 
-Enterprise responses are based on retrieved knowledge rather than unrestricted model generation.
+Enterprise responses are based on retrieved knowledge-base context.
 
 ### Source Awareness
 
@@ -673,7 +932,7 @@ Source filenames are preserved during retrieval.
 
 ### Prompt Injection Awareness
 
-Retrieved documents are treated as information/data and not as higher-priority system instructions.
+Retrieved documents are treated as information/data rather than higher-priority system instructions.
 
 ### Memory Control
 
@@ -681,34 +940,32 @@ Conversation memory is bounded to prevent unlimited context growth.
 
 ### Secrets
 
-No API keys or credentials should be committed to the repository.
+No API keys, passwords, credentials, or other secrets should be committed to the repository.
 
 ---
 
 # ⚠️ Prototype Disclaimer
 
-The documents included in the demonstration knowledge base are **synthetic demonstration content**.
+The documents included in the demonstration knowledge base are:
 
-They are:
+> **Synthetic demonstration content and NOT official KOHLER policies, procedures, legal documents, financial guidelines, or customer-support documentation.**
 
-> **NOT official KOHLER policies, procedures, legal documents, financial guidelines, or customer-support documentation.**
+For production deployment, these documents would be replaced with authorized and version-controlled enterprise sources.
 
-For production deployment, these documents would be replaced by authorized and version-controlled enterprise sources.
-
-The prototype should not be used to make real legal, financial, HR, privacy, or compliance decisions.
+This prototype should not be used to make real legal, financial, HR, privacy, or compliance decisions.
 
 ---
 
 # 📊 KOHLER Evaluation Alignment
 
-The project is designed around the four evaluation dimensions specified for the challenge.
+The project is designed around the four evaluation dimensions specified in the KOHLER–MIT WPU challenge.
 
-| Evaluation Criterion             |  Weight | Project Alignment                                                                |
-| -------------------------------- | ------: | -------------------------------------------------------------------------------- |
-| Approach & Innovation            | **45%** | RAG, local AI, multi-turn reasoning, dynamic formatting, source grounding        |
-| Technical Execution              | **25%** | LangGraph, Ollama, semantic retrieval, document ingestion, exports, self-tests   |
-| User Experience & Feasibility    | **20%** | Streamlit UI, conversational workflow, uploads, downloads                        |
-| Business & Sustainability Impact | **10%** | Enterprise knowledge accessibility, operational efficiency, standardized outputs |
+| Evaluation Criterion                 |  Weight | Project Alignment                                                                |
+| ------------------------------------ | ------: | -------------------------------------------------------------------------------- |
+| **Approach & Innovation**            | **45%** | RAG, local AI, multi-turn reasoning, dynamic formatting, source grounding        |
+| **Technical Execution**              | **25%** | LangGraph, Ollama, semantic retrieval, document ingestion, exports, self-tests   |
+| **User Experience & Feasibility**    | **20%** | Streamlit UI, conversational workflow, document uploads, downloads               |
+| **Business & Sustainability Impact** | **10%** | Enterprise knowledge accessibility, operational efficiency, standardized outputs |
 
 ---
 
@@ -716,7 +973,7 @@ The project is designed around the four evaluation dimensions specified for the 
 
 ## 1. Unified Enterprise Knowledge
 
-One interface across multiple enterprise domains.
+One conversational interface across multiple enterprise domains.
 
 ## 2. Local-First RAG
 
@@ -728,7 +985,7 @@ The system maintains conversational context and resolves references to previous 
 
 ## 4. Dynamic Output Generation
 
-The user can transform the same knowledge into different formats:
+The same knowledge can be transformed into different formats:
 
 ```text
 Natural Language
@@ -746,7 +1003,7 @@ Email
 
 ## 5. Enterprise Export Layer
 
-The generated result can become:
+Generated results can be exported as:
 
 ```text
 PDF
@@ -756,6 +1013,7 @@ JSON
 XML
 CSV
 HTML
+ZIP
 ```
 
 ## 6. Grounded Responses
@@ -764,13 +1022,13 @@ The system prioritizes retrieved enterprise evidence and discourages unsupported
 
 ## 7. Human Escalation
 
-When information is insufficient, the system is designed to avoid guessing and direct the user toward appropriate human/team review.
+When sufficient information is unavailable, the system is designed to avoid guessing and recommend appropriate human/team review.
 
 ---
 
 # 🔮 Future Enhancements
 
-The current prototype provides the foundation for a production-grade enterprise AI platform.
+The current prototype provides a foundation for a production-grade enterprise AI platform.
 
 Potential improvements include:
 
@@ -782,15 +1040,15 @@ Combine:
 Semantic Search + Keyword Search
 ```
 
-for improved retrieval precision.
+to improve retrieval precision.
 
 ### Reranking
 
-Introduce a dedicated reranker after initial retrieval.
+Introduce a dedicated reranking stage after initial retrieval.
 
 ### Persistent Vector Database
 
-Replace the in-memory index with a persistent vector database.
+Replace the current in-memory retrieval index with a persistent vector database.
 
 ### Domain Routing
 
@@ -827,7 +1085,7 @@ Generated Response
 Output Format
 ```
 
-for enterprise auditing.
+for enterprise auditing and traceability.
 
 ### RAG Evaluation
 
@@ -854,9 +1112,9 @@ Future versions could integrate with:
 
 # 🎥 Recommended Demo Flow
 
-For the 1–3 minute demonstration video:
+For the required **1–3 minute demonstration video**, the following sequence demonstrates the strongest capabilities.
 
-### 1. Introduce the Agent
+### Step 1 — Introduce the Agent
 
 Show:
 
@@ -865,7 +1123,7 @@ KOHLER Unified Enterprise AI Agent
 Track 3
 ```
 
-### 2. Ask an Enterprise Question
+### Step 2 — Ask an Enterprise Question
 
 Example:
 
@@ -873,9 +1131,9 @@ Example:
 What information is required for an expense claim?
 ```
 
-Show the grounded response.
+Show the grounded response and source.
 
-### 3. Demonstrate Multi-Turn Context
+### Step 3 — Demonstrate Multi-Turn Context
 
 Ask:
 
@@ -883,7 +1141,7 @@ Ask:
 Summarize that in three points.
 ```
 
-### 4. Demonstrate Dynamic Formatting
+### Step 4 — Demonstrate Dynamic Formatting
 
 Ask:
 
@@ -897,7 +1155,7 @@ Then:
 Draft an email based on this.
 ```
 
-### 5. Demonstrate Export
+### Step 5 — Demonstrate Export
 
 Show:
 
@@ -905,20 +1163,20 @@ Show:
 Download → PDF / Excel / JSON / Word
 ```
 
-### 6. Demonstrate Knowledge Ingestion
+### Step 6 — Demonstrate Knowledge Ingestion
 
-Upload a document and rebuild the knowledge index.
+Upload an additional document and rebuild the knowledge index.
 
-### 7. Close With Architecture
+### Step 7 — Show the Architecture
 
-Show:
+Finish with:
 
 ```text
 User
  ↓
-Retrieval
+Semantic Retrieval
  ↓
-RAG
+RAG Context
  ↓
 LangGraph
  ↓
@@ -945,7 +1203,9 @@ Before submitting the GitHub repository:
 * [ ] Self-test instructions
 * [ ] Synthetic-data disclaimer
 * [ ] No API keys or secrets
+* [ ] `.venv/` excluded from Git
 * [ ] Repository can be cloned and executed by an evaluator
+* [ ] Self-test passes successfully
 
 ---
 
@@ -1012,5 +1272,35 @@ Before submitting the GitHub repository:
 
 **Submission Deadline:** September 20, 2026 — 11:59 PM IST
 
-**Primary Innovation:**
-**RAG + Conversational Memory + Local LLM + Dynamic Output Formatting + Enterprise Export**
+**Evaluation:**
+
+```text
+Approach & Innovation       45%
+Technical Execution         25%
+User Experience             20%
+Business & Sustainability   10%
+```
+
+**Core Technology:**
+
+```text
+RAG
++
+Semantic Retrieval
++
+LangGraph
++
+Ollama
++
+Local LLM
++
+Conversation Memory
++
+Dynamic Output Formatting
++
+Enterprise Exports
+```
+
+**Core Pitch:**
+
+> **One enterprise conversation, multiple knowledge domains, and any output format — powered by grounded local AI.**
