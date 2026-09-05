@@ -1,0 +1,10 @@
+streamlit
+requests
+langchain
+langchain-core
+langchain-ollama
+langgraph
+pypdf
+python-docx
+openpyxl
+reportlab
