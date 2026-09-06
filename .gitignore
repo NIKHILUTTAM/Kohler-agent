@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+env/
+*.egg-info/
+build/
+dist/
+
+# Runtime-generated, local-only data (do not commit real KOHLER documents here
+# unless you intend the knowledge base to ship with the repo)
+conversation_memory.json
+knowledge_base/*
+!knowledge_base/.gitkeep
+
+.DS_Store

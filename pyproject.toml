@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kohler-unified-agent"
+version = "1.0.0"
+description = "KOHLER Unified Enterprise AI Agent - local-first RAG + LangGraph conversational agent (Track 3)"
+requires-python = ">=3.10"
+readme = "README.md"
+
+[tool.setuptools.packages.find]
+where = ["src"]
