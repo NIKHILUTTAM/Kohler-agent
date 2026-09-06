@@ -175,6 +175,6 @@ All of these are optional; sensible defaults are set in `config.py`.
 ## 8. Submission checklist (for this repo)
 
 - [x] Working model — source + run instructions (this repo)
-- [ ] Prompts Documentation (PDF) — see `docs/`
+- [x] Prompts Documentation (PDF) — see `docs/`
 - [ ] Video demo (1–3 min) — link or file in `docs/`
 - [x] Presentation deck (max 4 slides, PDF) — see `docs/`
